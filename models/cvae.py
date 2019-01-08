@@ -40,7 +40,7 @@ class CVAE(CondBaseModel):
         return { 'loss': loss }
 
     def predict(self, z_samples):
-        return self.decoder.predict(z_samples)
+        return self.f_dec.predict(z_samples)
 
     def build_model(self):
         self.f_enc = self.build_encoder()
