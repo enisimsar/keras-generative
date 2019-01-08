@@ -12,9 +12,9 @@ class CondBaseModel(BaseModel):
         super(CondBaseModel, self).__init__(**kwargs)
         self.attr_names = None
 
-    def main_loop(self, datasets, samples, attr_names, epochs=100, batchsize=100, reporter=[]):
+    def main_loop(self, datasets, samples, attr_names, epochs=100, initial_epoch=0, batchsize=100, reporter=[]):
         self.attr_names = attr_names
-        super(CondBaseModel, self).main_loop(datasets, samples, epochs, batchsize, reporter)
+        super(CondBaseModel, self).main_loop(datasets, samples, epochs, initial_epoch, batchsize, reporter)
 
     def make_batch(self, datasets, indx):
         images = datasets.images[indx]

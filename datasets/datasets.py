@@ -53,8 +53,8 @@ def load_data(filename, size=-1):
 
     dset = ConditionalDataset()
     dset.images = np.asarray(f['images'], 'float32') / 255.0
-    dset.attrs = np.asarray(f['attrs'], 'float32')
-    dset.attr_names = np.asarray(f['attr_names'])
+    dset.attrs = np.asarray(f['labels'], 'float32')
+    dset.attr_names = np.asarray(f['label_names'])
 
     if size > 0:
         dset.images = dset.images[:size]

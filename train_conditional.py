@@ -10,7 +10,8 @@ import matplotlib
 matplotlib.use('Agg')
 
 from models import CVAE, CVAEGAN, CALI, TripleGAN
-from datasets import load_data, mnist, svhn, fashion_mnist
+from datasets import mnist, svhn, fashion_mnist
+from datasets import datasets as dts
 
 models = {
     'cvae': CVAE,
@@ -25,6 +26,7 @@ def main():
     parser.add_argument('--model', type=str, required=True)
     parser.add_argument('--dataset', type=str, required=True)
     parser.add_argument('--epoch', type=int, default=200)
+    parser.add_argument('--initialepoch', type=int, default=0)
     parser.add_argument('--batchsize', type=int, default=50)
     parser.add_argument('--datasize', type=int, default=-1)
     parser.add_argument('--output', default='output')
@@ -50,7 +52,7 @@ def main():
     elif args.dataset == 'svhn':
         datasets = svhn.load_data()
     else:
-        datasets = load_data(args.dataset)
+        datasets = dts.load_data(args.dataset)
 
     # Construct model
     if args.model not in models:
@@ -71,6 +73,7 @@ def main():
     samples = np.random.normal(size=(10, args.zdims)).astype(np.float32)
     model.main_loop(datasets, samples, datasets.attr_names,
         epochs=args.epoch,
+        initial_epoch=args.initialepoch,
         batchsize=args.batchsize,
         reporter=['loss', 'g_loss', 'd_loss', 'g_acc', 'd_acc', 'c_loss', 'ae_loss'])
 

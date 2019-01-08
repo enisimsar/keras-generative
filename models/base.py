@@ -66,7 +66,7 @@ class BaseModel(metaclass=ABCMeta):
         errmsg = 'Input size should be 32 x 32 or 64 x 64!'
         raise Exception(errmsg)
 
-    def main_loop(self, datasets, samples, epochs=100, batchsize=100, reporter=[]):
+    def main_loop(self, datasets, samples, epochs=100, initial_epoch=0, batchsize=100, reporter=[]):
         '''
         Main learning loop
         '''
@@ -86,7 +86,7 @@ class BaseModel(metaclass=ABCMeta):
         # Start training
         print('\n\n--- START TRAINING ---\n')
         num_data = len(datasets)
-        for e in range(epochs):
+        for e in range(initial_epoch, epochs):
             perm = np.random.permutation(num_data)
             start_time = time.time()
             for b in range(0, num_data, batchsize):
