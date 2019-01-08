@@ -10,7 +10,8 @@ import matplotlib
 matplotlib.use('Agg')
 
 from models import VAE, DCGAN, ImprovedGAN, EBGAN, BEGAN, ALI
-from datasets import load_data, mnist
+from datasets import mnist, svhn, fashion_mnist
+from datasets import datasets as dts
 
 models = {
     'vae': VAE,
@@ -27,6 +28,7 @@ def main():
     parser.add_argument('--model', type=str, required=True)
     parser.add_argument('--dataset', type=str, required=True)
     parser.add_argument('--epoch', type=int, default=200)
+    parser.add_argument('--initialepoch', type=int, default=0)
     parser.add_argument('--batchsize', type=int, default=50)
     parser.add_argument('--output', default='output')
     parser.add_argument('--zdims', type=int, default=256)
@@ -46,10 +48,12 @@ def main():
     # Load datasets
     if args.dataset == 'mnist':
         datasets = mnist.load_data()
+    elif args.dataset == 'fashion_mnist':
+        datasets = mnist.load_data()
     elif args.dataset == 'svhn':
         datasets = svhn.load_data()
     else:
-        datasets = load_data(args.dataset)
+        datasets = dts.load_data(args.dataset)
 
     # Construct model
     if args.model not in models:
@@ -72,6 +76,7 @@ def main():
     samples = np.random.normal(size=(100, args.zdims)).astype(np.float32)
     model.main_loop(datasets, samples,
         epochs=args.epoch,
+        initial_epoch=args.initialepoch,
         batchsize=args.batchsize,
         reporter=['loss', 'g_loss', 'd_loss', 'g_acc', 'd_acc'])
 
